@@ -1,0 +1,52 @@
+State,SexEducationMandated,id,Details,Abstinence
+Alabama,20,01,Not Mandated,20
+Alaska,10,02,No Data,10
+Arizona,20,04,Not Mandated,20
+Arkansas,10,05,No Data,20
+California,30,06,Mandated,30
+Colorado,20,08,Not Mandated,30
+Connecticut,20,09,Not Mandated,10
+Delaware,30,10,Mandated,20
+District of Columbia,30,11,Mandated,40
+Florida,20,12,Not Mandated,20
+Georgia,30,13,Mandated,20
+Hawaii,30,15,Mandated,30
+Idaho,20,16,Not Mandated,10
+Illinois,20,17,Not Mandated,20
+Indiana,20,18,Not Mandated,20
+Iowa,30,19,Mandated,40
+Kansas,10,20,No Data,10
+Kentucky,30,21,Mandated,20
+Louisiana,20,22,Not Mandated,20
+Maine,30,23,Mandated,20
+Maryland,30,24,Mandated,30
+Massachusetts,20,25,Not Mandated,10
+Michigan,20,26,Not Mandated,20
+Minnesota,30,27,Mandated,30
+Mississippi,30,28,Mandated,20
+Missouri,20,29,Not Mandated,20
+Montana,30,30,Mandated,30
+Nebraska,10,31,No Data,10
+Nevada,30,32,Mandated,10
+New Hampshire,20,33,Not Mandated,40
+New Jersey,30,34,Mandated,20
+New Mexico,30,35,Mandated,30
+New York,20,36,Not Mandated,40
+North Carolina,30,37,Mandated,20
+North Dakota,30,38,Mandated,30
+Ohio,30,39,Mandated,20
+Oklahoma,20,40,Not Mandated,20
+Oregon,30,41,Mandated,20
+Pennsylvania,20,42,Not Mandated,40
+Rhode Island,30,44,Mandated,20
+South Carolina,30,45,Mandated,20
+South Dakota,10,46,No Data,10
+Tennessee,30,47,Mandated,20
+Texas,20,48,Not Mandated,20
+Utah,30,49,Mandated,20
+Vermont,30,50,Mandated,30
+Virginia,20,51,Not Mandated,30
+Washington,20,53,Not Mandated,20
+West Virginia,30,54,Mandated,30
+Wisconsin,20,55,Not Mandated,20
+Wyoming,10,56,No Data,40
