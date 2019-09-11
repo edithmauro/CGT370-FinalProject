@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    Linked to DataSets
+
+    https://catalog.data.gov/dataset/teen-birth-rates-for-age-group-15-19-in-the-united-states-by-county
+    https://www.guttmacher.org/state-policy/explore/sex-and-hiv-education
+    
+
+    ((The Census Bureau does request to be cited as a source for the GeoJson file))
+
+-->
+
+<head>
+    <!-- Required meta tags -->
+    <link rel='stylesheet' type='text/css' href="styles.css">
+    <script type="text/javascript" src="scripts.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+
+    
+    <title>Teen Birth Rates in America</title>
+  </head>
+  <body class = "singlePage">
+          <!-- Navigation -->
+  <nav class="navbar navbar-masthead navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Teen Birth</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+            <li class="nav-item">
+                <a class="nav-link" href="about.html">Authors</a>
+              </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <div>
+
+    <h1 class="header">Contact Us</h1>
+
+
+<section>
+  <div class = "container col-md-8 col-xs-12">      <hr>
+      <p class = "text-center">emauro@purdue.edu | moore539@purdue.edu | alexa101@purdue.edu </p>
+      <hr>
+  </div>
+</section>
+
+<section> <!--Contact Form-->
+<div class="container">
+  <div class="row justify-content-center">
+      <div class="col-md-10">
+          <form id = "ContactForm" class="contact__form container" action = "https://formspree.io/edie.mauro14@gmail.com" method="POST">
+          <div class="form-row">
+              <div class="form-group col-md-6 col-xs-12">
+                  <label for = "name">Name</label>
+                  <input id = "name" name="name" type="text" class="form-control" required>
+              </div>
+              <div class="form-group col-md-6 col-xs-12">
+                  <label for = "email">Email</label>
+                  <input id = "email" name="email" type="email" class="form-control" required>
+              </div>
+              <div class="form-group col-12">
+                  <label for = "subject">Subject</label>
+                  <input id = "subject" name="subject" type="text" class="form-control" required>
+              </div>
+              <div class="form-group col-12">
+                  <label for = "message">Message</label>
+                  <textarea id = "message" name="message" class="form-control" rows="3" required></textarea>
+              </div>
+              <div id = "SubmitButton" class="col-12 text-center">
+                  <input name="submit" type="submit" class="btn" value="Send Message">
+              </div>
+          </div>
+          </form>
+      </div>
+  </div>
+</div>
+</section>
+ </div>
+<br>
+    </body>
+
+    <footer>
+      <div class = "footerText singleFooter">
+      <p class = "noMargin">Chance Alexander | Edith Mauro | Pablo Moore</p>
+      <p class = "noMargin">CGT 370 Final Project | Instructor: Junhan Zhao</p>
+      </div>
+    </footer>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+</html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    Linked to DataSets
+
+    https://catalog.data.gov/dataset/teen-birth-rates-for-age-group-15-19-in-the-united-states-by-county
+    https://www.guttmacher.org/state-policy/explore/sex-and-hiv-education
+    
+
+    ((The Census Bureau does request to be cited as a source for the GeoJson file))
+
+-->
+
+<head>
+		<!-- Required meta tags -->
+    <link rel='stylesheet' type='text/css' href="styles.css">
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!--D3 Scripts-->
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="https://d3js.org/topojson.v2.min.js"></script>
+	<script src="https://d3js.org/queue.v1.min.js"></script>
+	<script src="https://d3js.org/d3-color.v1.min.js"></script>
+	<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+	<!--- Google charts script -->
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <div id="chart_div"></div>
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+
+    
+    <title>Teen Birth Rates in America</title>
+  </head>
+  <body>
+          <!-- Navigation -->
+          <nav class="navbar navbar-masthead navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <div class="container">
+              <a class="navbar-brand" href="index.html">Teen Birth and Sex Education</a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                  <li class="nav-item active">
+                    <a class="nav-link" href="index.html">Home</a>
+                  </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">Authors</a>
+                      </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+
+    <div class = "container">
+        <h1 class = "header">Teen Birth Rates in America</h1>
+        <h2 class = "subHeader">How the Teen Birth Rate has changed, and why this might be happening.</h2>
+        <hr>
+       <p class = "boldText intDescription">CGT 370: Section 001 | Final Project | Instructor: Junhan Zhao | Project Members: Chance Alexander, Edith Mauro, and Pablo Moore</p> <p class = "intDescription noMargin">This is a story telling-based project that uses data on birth rates for the states and their counties and data on the sex education requirement for each state.</p> 
+        <hr>
+        <h3 class = "sectionHeader">Teen Birth, Sex Education, & Abstinence</h3>
+
+        <p class = "intDescription"><span class = "underline">Interactive Elements</span>: click on the US map to reveal county data for that state in a side-by-side format; <span class = "underline">State Map</span>: A tool tip appears on hover that contains data about the birth rate in each county; <span class = "underline">USA Map:</span> On hover color changes to indicate which state you will click and reveals a tool tip; Click on the buttons to toggle the dataset desired</p>
+
+        <p>There could be a number of reasons young teens (ages 15-19) are giving birth.  <span class = "boldText">Our hypothesis is that a combination of a lack of proper sex education and abstinence-only education. </span>The choropleth below shows whether sex education is mandated per state and the birth rate per county. <span class = "underline">Note that the values used are for 2015 only.</span></p>
+
+      </div>
+      <br>
+      <div class = "container row col-md-12">
+      <div id = "option" class = "col-md-3 firstButton">
+      <input name = "updateButton"
+          type = "button"
+          value = "Click to View Sex Education Data"
+          onclick = "sexEd()" />
+      </div>
+
+      <div id = "option" class = "col-md-3">
+      <input name = "updateButton"
+          type = "button"
+          value = "Click to View Abstinence Data"
+          onclick = "abstinence()" />
+      </div>
+	  <div id = "option" class = "col-md-3">
+      	<input name = "updateButton"
+          type = "button"
+          value = "Click to View Birth Rate Data"
+          onclick = "birthRates()" />
+      </div>
+
+    </div> <br>
+
+    <div class = "container-fluid row">
+      <table class = "usaMapLegends">
+          <tr>
+            <th class = "underline" colspan="3">USA Map - Sex Education Mandated</th>
+          </tr>
+            <tr>
+              <td class = "noData legend" >No Data</td>
+              <td class = "mandated legend">Is Mandated</td>
+              <td class = "notMandated legend">Not Mandated</td>
+            </tr>
+        </table>
+
+        <table class = "usaMapLegends">
+        <tr>
+            <th class = "underline" colspan="3">USA Map - Abstinence Education</th>
+          </tr>
+            <tr>
+              <td class = "noData legend">No Data</td>
+              <td class = "stressed legend">Stressed</td>
+              <td class = "covered legend">Covered</td>
+              <td class = "notIncluded legend">Not Included</td>
+            </tr>
+        </table>
+
+        <table class = "smallUSALegends">
+          <tr>
+            <th class = "underline" colspan="9">Teen Birth Rate Legend</th>
+          </tr>
+            <tr>
+             <td id = "zero" class = legend>0</td>
+              <td id = "eight" class = legend>8</td>
+              <td id = "sixteen" class = legend>16</td>
+              <td id = "twentyFour" class = legend>24</td>
+              <td id = "thirtyTwo" class = legend>32</td>
+              <td id = "forty" class = legend>40</td>
+              <td id = "fortyEight" class = legend>48</td>
+              <td id = "fiftySix" class = legend>56</td>
+              <td id = "sixtyFour" class = legend>64+</td>
+            </tr>
+        </table>
+        
+
+      </div>
+
+          <div class="row container-fluid">
+            <div class = "mapVisual" id="usa_map"></div>	
+            <div id="state_map"></div>
+        </div>
+
+
+
+
+
+        <br>
+
+      <div class = "container">
+        <p>From the choropleth above, we can see that sex education requirements vary throughout the US. <span class = "boldText">There does not seem to be a strong pattern in regards to which states/regions are required to teach sex education. </span> When clicking on a state, we can see the teenage birth rate for each county represented by both a choropleth and tooltip. Like the state map, there does not seem to be a clear pattern of teenage birth rates throughout the counties.  However, it should be noted that we found a trend of high teenage birth rates in the southeast, while we also saw a trend of low teenage birth rates in the northeast.</p>
+
+        <hr>
+        <h3 class = "sectionHeader">Change in Teenage Birth Rate Over Time</h3>
+
+        <p class = "intDescription"><span class = "underline">Interactive Elements</span>: hover over or click on the points on the line graph to reveal data about the average teenage birth rate for that year
+
+
+		<!--LINE CHART-->
+ 		<div id="lineChart" class = "container" style="height: 500px; width: 100%">
+        <script type = "text/javascript">
+        google.charts.load('current', {packages: ['corechart', 'line']});
+        google.charts.setOnLoadCallback(drawBasic);
+
+        function drawBasic() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Year');
+        data.addColumn('number', 'Teen Birth Rate');
+        //data.addColumn({type: 'string', role: 'tooltip'});
+
+        data.addRows([
+        [new Date (2003, 0, 1), 45.75], [new Date (2004, 0, 1), 45.15], [new Date(2005, 0, 1), 44.42], [new Date(2006, 0, 1), 46.14], [new Date(2007, 0, 1), 47.13], [new Date(2008, 0, 1), 46.33], [new Date(2009, 0, 1), 44.32], [new Date(2010, 0, 1), 40.58], [new Date(2011, 0, 1), 37.76], [new Date(2012, 0, 1), 35.90], [new Date(2013, 0, 1), 32.72], [new Date(2014, 0, 1), 30.14], [new Date(2015, 0, 1), 27.81]
+        ]);
+
+        /*        data.addRows([
+        [2003, 45.75], [2004, 45.15], [2005, 44.42], [2006, 46.14], [2007, 47.13], [2008, 46.33], [2009, 44.32], [2010, 40.58], [2011, 37.76], [2012, 35.90], [2013, 32.72], [2014, 30.14], [2015, 27.81]
+        ]);*/
+
+        /*        data.addRows([
+        [2003, 45.75, '2003'], [2004, 45.15, '2004'], [2005, 44.42, '2005'], [2006, 46.14, '2006'], [2007, 47.13, '2007'], [2008, 46.33, '2008'], [2009, 44.32, '2009'], [2010, 40.58, '2010'], [2011, 37.76, '2011'], [2012, 35.90, '2012'], [2013, 32.72, '2013'], [2014, 30.14, '2014'], [2015, 27.81, '2015']
+        ]);*/
+
+        var options = {
+          hAxis: {
+            title: 'Year',
+            format: 'yyyy',
+            gridlines: {color: '#ddd'},
+          },
+
+          vAxis: {
+            title: 'Teen Birth Rate',
+            gridlines: {color: '#ddd'},
+          },
+          pointsVisible: true,
+          legend: {position: 'none'},
+          width: '100%',
+          lineWidth: '3',
+          chartArea: {'left': 100, 'top': 10, 'right': 30, 'bottom': 60,},// backgroundColor: '#edf8fc'},
+          pointShape: 'diamond',
+          pointSize: 10,
+          curveType: 'function',
+          tooltip: {
+              isHtml: true,
+              trigger: 'both'
+          },
+    
+          trendlines: {
+              0: {
+                type: 'linear',
+                color: 'tomato', //'#9ee4f7',
+                lineWidth: 3,
+                opacity: 0.3,
+               // showR2: true,
+               // visibleInLegend: true,
+                enableInteractivity: false,
+                pointsVisible: false,
+              }
+            }
+
+
+          //colors: ['#15A0C8'],
+          
+         // tooltip: {isHtml: true},
+
+
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('lineChart'));
+
+        var formatter = new google.visualization.DateFormat({ pattern: 'yyyy', });
+            formatter.format(data, 0);
+
+
+        chart.draw(data, options);
+        }	
+        </script>
+  </div>
+
+    <!--Starting trying to add bar chart-->
+    
+      <p>
+        Using an area graph to analyze how the average teen birth rate for the entire United States for each year helps us identify whether or not the teen birth rate has been increasing or decreasing over the years.  <span class = "boldText">Since 2003, the average teen birth rate for the United States saw a stagnation, staying in the mid-40's up until 2009 when the average teen birth rate starts to steadily decline, and continues to do so up through 2015.</span>
+      </p>
+
+      <hr>
+	
+	<!--  *******************    BIRTHRATES BAR GRAPHS *******************-->	  
+		 
+		  <!--*** EDUCATION MANDATED? ***-->
+
+<h3 class = "sectionHeader">Highest and Lowest Teenage Birthrates</h3>
+
+<p class = "intDescription"><span class = "underline">Interactive Elements</span>: hover over the bars on the graph to display data about the selected bar.
+
+
+<div class = "row">
+	<h3 class="subSection">Is Education Mandated?</h3>
+		<p>The bar graphs below show the five states with the highest and lowest teenage birth rates. The color of the bar represents whether sex education is mandated for the respective state. <span class = "underline">It is important to note that the values used for the teenage birth rate are averages from 2003 to 2015.</span></p>
+	<div class = "col-md-6 col-sm-12 col-lg-6">
+
+		<br>
+      <h4>5 Highest Teenage Birth Rates</h4>
+          <div id="barChart" class = "container" style="height: 500px; width: 100%;">
+              <script type = "text/javascript">
+              google.charts.load('current', {packages: ['corechart', 'bar']});
+              google.charts.setOnLoadCallback(drawBasic);
+        
+              function drawBasic() {
+        
+              var data = new google.visualization.DataTable();
+              /*data.addColumn('string', 'State');
+              data.addColumn('number', 'Birth Rate');
+			  //data.addColumn({ role: 'style' });
+        
+              data.addRows([
+              ["Mississippi", 59.98], 
+              ["Texas", 58.44], 
+              ["Arkansas", 56.80], 
+              ["Oklahoma", 54.91], 
+              ["Arizona", 54.50]
+              ]);
+      			*/
+				  
+			 var data = google.visualization.arrayToDataTable([
+				['State', 'Birth Rate', { role: 'style' } ],
+				['Mississippi', 59.98, 'color: #3266CC'],
+				['Texas', 58.44, 'color: tomato'],
+				['Arkansas',  56.80, 'color: #D3D3D3'],
+				['Oklahoma',  54.91, 'color: tomato'],
+				['Arizona', 54.50, 'color: tomato']
+			  ]);
+        
+              var chart = new google.visualization.BarChart(document.getElementById('barChart'));
+        
+              var options = {
+                hAxis: {
+                  title: 'Top 5 Teenage Birth Rate',
+                  format: '##'
+                },
+                vAxis: {
+                  title: 'State'
+                },
+                legend: {position: 'none'},
+                width: '100%',
+                chartArea: {'left': 150, 'top': 10, 'right': 30, 'bottom': 60},
+				
+				//colors: ['green','red', 'white', 'red', 'red'],
+
+
+              };
+
+
+              chart.draw(data, options);
+            }	
+            
+
+              </script>
+			 
+          </div>
+		  </div>
+    <!--Bar chart 2-->
+ 
+	<div class = "col-md-6 col-sm-12 col-lg-6">
+		   <br>
+	  <h4>5 Lowest Teenage Birth Rates</h4>
+		<div id="barChart2" class = "container" style="height: 500px; width: 100%;">
+              <script type = "text/javascript">
+              google.charts.load('current', {packages: ['corechart', 'bar']});
+              google.charts.setOnLoadCallback(drawBasic);
+        
+              function drawBasic() {
+        
+             /* var data = new google.visualization.DataTable();
+              data.addColumn('string', 'State');
+              data.addColumn('number', 'Birth Rate');
+        
+              data.addRows([
+              ["Connecticut", 10.13], ["Rhode Island", 10.18], ["Massachusetts", 10.73], ["New Hampshire", 12.55], ["New Jersey", 14.05]
+              ]);*/
+				  
+			 var data = google.visualization.arrayToDataTable([
+				['State', 'Birth Rate', { role: 'style' } ],
+				['Connecticut', 10.13, 'color: tomato'],
+				['Rhode Island', 10.18, 'color: #3266CC'],
+				['Massachusetts',  10.73, 'color: tomato'],
+				['New Hampshire',  12.55, 'color: tomato'],
+				['New Jersey', 14.05, 'color: #3266CC']
+			  ]);
+        
+        
+              var options = {
+                hAxis: {
+                  title: 'Bottom 5 Birth Rate',
+                  format: '##'
+                },
+                vAxis: {
+                  title: 'State'
+                },
+                legend: {position: 'none'},
+                width: '100%',
+                chartArea: {'left': 150, 'top': 10, 'right': 30, 'bottom': 60},
+              };
+        
+              var chart = new google.visualization.BarChart(document.getElementById('barChart2'));
+        
+              chart.draw(data, options);
+            }	
+              </script>
+			
+          </div>
+
+    </div>
+    <!--legend for the two graphs-->
+          <br>
+          
+        <div class = "legendCenter">
+          <table>
+            <tr>
+              <th  colspan="3">Education Type</th>
+            </tr>
+              <tr>
+                <td class = "legend noData">Not Specified</td>
+                <td class = "legend stressed">Not Mandated</td>
+                <td class = "legend mandated">Is Mandated</td>
+              </tr>
+          </table>
+        </div>
+      
+          
+        <p style = "margin-top: 20px;">The bar charts above reveal an interesting insight. We hypothesized that the lack of mandated sexual education could be the reason for high teen birth rates. Looking at the highest birth rate graph, Mississippi has the highest average birth rate; however, Mississippi mandates sexual education. There is a similar result for the 5 lowest birth rates. Connecticut has the lowest average teen birth rate; however sexual education is not mandated. <span class = "boldText">From these visualizations, one can conclude that whether sexual education is mandated in schools has little effect on the teen birth rate.</span></p>
+	</div>
+<hr>
+		   <!--*** ABSTINENCE MANDATED? ***-->
+<div class = "col-md-12 row">
+<h3 class = "subSection">Is Abstinence a Content Requirement?</h3>
+<p>The bar graphs below show the five states with the highest and lowest birth rates. The color of the bar represents whether that state's sexual education program stresses abstinence, mentions abstinence, or does not require abstinence. <span class = "underline">It is important to note that the values used for the birth rate are averages from 2003 to 2015.</span></p>
+	<div class = "col-md-6 col-sm-12 col-lg-6">
+
+		<br>
+      <h4>5 Highest Teenage Birth Rates</h4>
+          <div id="barChart4" class = "container" style="height: 500px; width: 100%;">
+              <script type = "text/javascript">
+              google.charts.load('current', {packages: ['corechart', 'bar']});
+              google.charts.setOnLoadCallback(drawBasic);
+        
+              function drawBasic() {
+        
+              var data = new google.visualization.DataTable();
+              /*data.addColumn('string', 'State');
+              data.addColumn('number', 'Birth Rate');
+			  //data.addColumn({ role: 'style' });
+        
+              data.addRows([
+              ["Mississippi", 59.98], 
+              ["Texas", 58.44], 
+              ["Arkansas", 56.80], 
+              ["Oklahoma", 54.91], 
+              ["Arizona", 54.50]
+              ]);
+      			*/
+				  
+			 var data = google.visualization.arrayToDataTable([
+				['State', 'Birth Rate', { role: 'style' } ],
+				['Mississippi', 59.98, 'color: tomato'],
+				['Texas', 58.44, 'color: tomato'],
+				['Arkansas',  56.80, 'color: tomato'],
+				['Oklahoma',  54.91, 'color: tomato'],
+				['Arizona', 54.50, 'color: tomato']
+			  ]);
+        
+              var chart = new google.visualization.BarChart(document.getElementById('barChart4'));
+        
+              var options = {
+                hAxis: {
+                  title: 'Top 5 Birth Rate',
+                  format: '##'
+                },
+                vAxis: {
+                  title: 'State'
+                },
+                legend: {position: 'none'},
+                width: '100%',
+                chartArea: {'left': 150, 'top': 10, 'right': 30, 'bottom': 60},
+				
+				//colors: ['green','red', 'white', 'red', 'red'],
+
+
+              };
+
+
+              chart.draw(data, options);
+            }	
+            
+
+              </script>
+			 
+          </div>
+
+		  </div>
+    <!--Bar chart 2-->
+ 
+	<div class = "col-md-6 col-sm-12 col-lg-6">
+		   <br>
+	  <h4>5 Lowest Teenage Birth Rates</h4>
+		<div id="barChart3" class = "container" style="height: 500px; width: 100%;">
+              <script type = "text/javascript">
+              google.charts.load('current', {packages: ['corechart', 'bar']});
+              google.charts.setOnLoadCallback(drawBasic);
+        
+              function drawBasic() {
+        
+             /* var data = new google.visualization.DataTable();
+              data.addColumn('string', 'State');
+              data.addColumn('number', 'Birth Rate');
+        
+              data.addRows([
+              ["Connecticut", 10.13], ["Rhode Island", 10.18], ["Massachusetts", 10.73], ["New Hampshire", 12.55], ["New Jersey", 14.05]
+              ]);*/
+				  
+			 var data = google.visualization.arrayToDataTable([
+				['State', 'Birth Rate', { role: 'style' } ],
+				['Connecticut', 10.13, 'color: #D3D3D3'],
+				['Rhode Island', 10.18, 'color: tomato'],
+				['Massachusetts',  10.73, 'color: #D3D3D3'],
+				['New Hampshire',  12.55, 'color: #3266CC'],
+				['New Jersey', 14.05, 'color: tomato']
+			  ]);
+        
+        
+              var options = {
+                hAxis: {
+                  title: 'Bottom 5 Birth Rate',
+                  format: '##'
+                },
+                vAxis: {
+                  title: 'State'
+                },
+                legend: {position: 'none'},
+                width: '100%',
+                chartArea: {'left': 150, 'top': 10, 'right': 30, 'bottom': 60},
+              };
+        
+              var chart = new google.visualization.BarChart(document.getElementById('barChart3'));
+        
+              chart.draw(data, options);
+            }	
+              </script>
+			
+          </div>
+
+    </div>
+          <br>        
+        <div class = "legendCenter">
+            <table>
+              <tr>
+                <th  colspan="3">Abstinence Education Type</th>
+              </tr>
+                <tr>
+                  <td class = "legend noData">Not Specified</td>
+                  <td class = "legend stressed">Abstinence Stressed</td>
+                  <td class = "legend mandated">Abstinence Not Covered</td>
+                </tr>
+            </table>
+          </div>
+          <br> 
+        <p style = "margin-top: 30px;">The bar charts above reveal similar insights to the two other bar charts shown above. Of the five states with the highest teen birth rates, all five of them stress abstinence in their sexual education program. This is very interesting as one would hypothesize that stressing abstinence would result in lower teen birth rates; however, <span class = "boldText">the bar charts above show the exact opposite of this.</span> </p>
+	</div>		  
+		  
+		  
+		  
+  </div>
+
+
+
+<br>
+
+    </body>
+
+    <footer>
+      <div class = "footerText">
+      <p class = "noMargin">Chance Alexander | Edith Mauro | Pablo Moore</p>
+      <p class = "noMargin">CGT 370 Final Project | Instructor: Junhan Zhao</p>
+      </div>
+    </footer>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="d3-tip.js"></script>
+    <script src="scripts.js"></script>
+
+</html>
